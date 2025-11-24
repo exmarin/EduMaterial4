@@ -1,26 +1,38 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from "react";
+import {Layout} from "./components/Layout";
+import {Dashboard} from "./components/Dashboard";
+import {CourseManager} from "./components/CourseManager";
+import {Inventory} from "./components/Inventory";
+import {SupplierManager} from "./components/SupplierManager";
+import {QuoteBuilder} from "./components/QuoteBuilder";
 
-import Dashboard from "./Dashboard";
-import CourseManager from "./CourseManager";
-import Inventory from "./Inventory";
-import SupplierManager from "./SupplierManager";
-import QuoteBuilder from "./QuoteBuilder";
+type View = "dashboard" | "quotes" | "inventory" | "courses" | "suppliers";
 
-export default function App() {
+const App: React.FC = () => {
+  const [currentView, setCurrentView] = React.useState<View>("dashboard");
+
+  const renderView = () => {
+    switch (currentView) {
+      case "dashboard":
+        return <Dashboard />;
+      case "quotes":
+        return <QuoteBuilder />;
+      case "inventory":
+        return <Inventory />;
+      case "courses":
+        return <CourseManager />;
+      case "suppliers":
+        return <SupplierManager />;
+      default:
+        return <Dashboard />;
+    }
+  };
+
   return (
-    <BrowserRouter>
-      <Routes>
-
-        {/* Página principal */}
-        <Route path="/" element={<Dashboard />} />
-
-        {/* Otras vistas */}
-        <Route path="/courses" element={<CourseManager />} />
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/suppliers" element={<SupplierManager />} />
-        <Route path="/quotes" element={<QuoteBuilder />} />
-
-      </Routes>
-    </BrowserRouter>
+    <Layout currentView={currentView} onChangeView={setCurrentView}>
+      {renderView()}
+    </Layout>
   );
-}
+};
+
+export default App;

@@ -1,7 +1,16 @@
 import { GoogleGenAI, Type } from "@google/genai";
 
-// Initialize API client
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+
+// Load API key from Vite environment
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+if (!API_KEY) {
+  throw new Error("❌ Gemini API key missing. Add VITE_GEMINI_API_KEY to .env");
+}
+
+// Initialize AI client
+const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 export interface GeneratedMaterialItem {
   name: string;
@@ -11,7 +20,14 @@ export interface GeneratedMaterialItem {
   reasoning: string;
 }
 
-export const generateCourseMaterials = async (courseName: string, description: string): Promise<GeneratedMaterialItem[]> => {
+export const generateCourseMaterials = async (
+  courseName: string,
+  description: string
+): Promise<GeneratedMaterialItem[]> => {
+  if (!ai) {
+    throw new Error("Gemini client not initialized because API key is missing");
+  }
+
   try {
     const model = "gemini-2.5-flash";
     const prompt = `
