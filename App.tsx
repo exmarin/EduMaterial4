@@ -21,3 +21,6 @@ export default function App() {
         <Route path="/quotes" element={<QuoteBuilder />} />
 
       </Routes>
+    </BrowserRouter>
+  );
+}
