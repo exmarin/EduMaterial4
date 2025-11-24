@@ -1,39 +1,23 @@
-import React, { useState } from 'react';
-import { Layout } from './components/Layout';
-import { Dashboard } from './components/Dashboard';
-import { QuoteBuilder } from './components/QuoteBuilder';
-import { Inventory } from './components/Inventory';
-import { CourseManager } from './components/CourseManager';
-import { SupplierManager } from './components/SupplierManager';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// Types defined in Layout usually, but needed here for state
-type View = 'dashboard' | 'quotes' | 'inventory' | 'courses' | 'suppliers' | 'settings';
+import Dashboard from "./Dashboard";
+import CourseManager from "./CourseManager";
+import Inventory from "./Inventory";
+import SupplierManager from "./SupplierManager";
+import QuoteBuilder from "./QuoteBuilder";
 
-const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<View>('dashboard');
-
-  const renderView = () => {
-    switch (currentView) {
-      case 'dashboard':
-        return <Dashboard />;
-      case 'quotes':
-        return <QuoteBuilder />;
-      case 'inventory':
-        return <Inventory />;
-      case 'courses':
-        return <CourseManager />;
-      case 'suppliers':
-        return <SupplierManager />;
-      default:
-        return <div className="flex items-center justify-center h-full text-slate-400">Vista en construcción</div>;
-    }
-  };
-
+export default function App() {
   return (
-    <Layout currentView={currentView} onChangeView={setCurrentView}>
-      {renderView()}
-    </Layout>
-  );
-};
+    <BrowserRouter>
+      <Routes>
 
-export default App;
+        {/* Página principal */}
+        <Route path="/" element={<Dashboard />} />
+
+        {/* Otras vistas */}
+        <Route path="/courses" element={<CourseManager />} />
+        <Route path="/inventory" element={<Inventory />} />
+        <Route path="/suppliers" element={<SupplierManager />} />
+        <Route path="/quotes" element={<QuoteBuilder />} />
+
+      </Routes>
